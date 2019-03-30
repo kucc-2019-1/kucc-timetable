@@ -10,10 +10,10 @@ class ReservationViewSet(viewsets.ModelViewSet):
 
 
 class Time_tableViewSet(viewsets.ModelViewSet):
-    queryset = models.Time_table.objects.all()
-    serializer_class = serializers.Time_TableSerializer
+    queryset = models.TimeTable.objects.all()
+    serializer_class = serializers.TimeTableSerializer
 
 
 class Time_indexViewSet(viewsets.ModelViewSet):
-    queryset = models.Time_index.objects.all()
-    serializer_class = serializers.Time_IndexSerializer
+    queryset = models.TimeIndex.objects.all()
+    serializer_class = serializers.TimeIndexSerializer

@@ -9,13 +9,13 @@ class ReservationSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class Time_TableSerializer(serializers.ModelSerializer):
+class TimeTableSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.Time_table
+        model = models.TimeTable
         fields = '__all__'
 
 
-class Time_IndexSerializer(serializers.ModelSerializer):
+class TimeIndexSerializer(serializers.ModelSerializer):
     class Meta:
-        model = models.Time_index
+        model = models.TimeIndex
         fields = '__all__'
