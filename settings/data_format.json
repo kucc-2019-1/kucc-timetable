@@ -1,0 +1,39 @@
+1. 날짜 목록 API(GET)
+{
+  "message" : "",
+  "data" : {
+    "day" : "2019-03-22",
+    "day_of_week" : "SUN"
+  }
+}
+
+2. 날짜별 예약 가능 시간(GET)
+{
+  "message" : "",
+  "data" : {
+    "number" : 0,
+    "time" : "09:00~09:30"
+  }
+}
+
+3. 예약 목록 보기(GET)
+{
+  "message" : "",
+  "data" : {
+    "title" : "python 스터디",
+    "name" : "김수홍",
+    "day" :0,
+    "time" : {"start" : 0, "finish" : 2}
+  }
+}
+
+4. 예약 만들기(POST)
+{
+  "message" : "",
+  "data" : {
+    "title" : "알고리즘 스터디",
+    "name" : "남정호",
+    "day" :1,
+    "time" : {"start" : 5, "finish" : 7}
+  }
+}
