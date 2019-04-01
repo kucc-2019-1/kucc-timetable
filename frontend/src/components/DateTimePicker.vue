@@ -1,20 +1,32 @@
 <template>
-    <div id="datepicker">
-<!--      <v-date-picker v-model="picker" :landscape="landscape" :reactive="reactive"></v-date-picker>-->
-      <v-select
-        :items="days"
-        label="날짜"
-      ></v-select>
+  <div id="datepicker">
+    <v-select
+      @change="changedLabel"
+      :items="days"
+      label="날짜"
+    ></v-select>
+    <div id="timepicker">
+      <v-checkbox
+        v-for="time in dates[0].times"
+        :label="`${time}`"
+        :value="`${time}`"
+      ></v-checkbox>
+      <v-checkbox
+        v-for="time in dates[1].times"
+        :label="`${time}`"
+        :value="`${time}`"
+      ></v-checkbox>
     </div>
+
+  </div>
 </template>
 
+
 <script>
-    export default {
-      el:'#datepicker',
+  export default {
       name: "DateTimePicker",
       data () {
         return {
-          picker: new Date().toISOString().substr(0,10),
           landscape: false,
           reactive: false,
           days: ['2019-03-30','2019-03-31'],
@@ -36,10 +48,17 @@
             }
           ]
         }
-      }
+      },
+      methods: {
+        changedLabel: function (event) {
+          alert(event)
+        }
+      },
     }
 </script>
 
 <style scoped>
-
+  #datepicker {
+    width: 20%;
+  }
 </style>
