@@ -7,7 +7,6 @@ class Reservation(models.Model):
     user = models.ForeignKey('user.User', models.DO_NOTHING)
 
     class Meta:
-        managed = False
         db_table = 'reservation'
 
 
@@ -17,7 +16,6 @@ class TimeIndex(models.Model):
     end_time = models.TimeField()
 
     class Meta:
-        managed = False
         db_table = 'time_index'
 
 
@@ -28,5 +26,4 @@ class TimeTable(models.Model):
     time_index = models.ForeignKey(TimeIndex, models.DO_NOTHING, blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'time_slot'
