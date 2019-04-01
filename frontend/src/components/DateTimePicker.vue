@@ -1,23 +1,20 @@
 <template>
-  <div id="datepicker">
-    <v-select
-      @change="changedLabel"
-      :items="days"
-      label="날짜"
-    ></v-select>
+  <div>
+    <div id="datepicker">
+      <v-select
+        @change="changedLabel"
+        :items="days"
+        label="날짜"
+      ></v-select>
+    </div>
     <div id="timepicker">
       <v-checkbox
+        style="height: 10px;"
         v-for="time in dates[0].times"
         :label="`${time}`"
         :value="`${time}`"
       ></v-checkbox>
-      <v-checkbox
-        v-for="time in dates[1].times"
-        :label="`${time}`"
-        :value="`${time}`"
-      ></v-checkbox>
     </div>
-
   </div>
 </template>
 
@@ -35,7 +32,11 @@
               day: '2019-03-30',
               times: [
                 '9:00~9:30',
-                '9:30~10:00'
+                '9:30~10:00',
+                '10:00~10:30',
+                '10:30~11:00',
+                '11:00~11:30',
+                '11:30~12:00',
               ]
             },
             {
@@ -59,6 +60,16 @@
 
 <style scoped>
   #datepicker {
-    width: 20%;
+    display: inline-block;
+    width: 180px;
+    margin-left: 30px;
+    margin-right: 30px;
+    float: left;
   }
+  #timepicker {
+    display:inline-block;
+    width: 300px;
+    float: left;
+  }
+
 </style>
