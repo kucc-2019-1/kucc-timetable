@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Reservation, TimeIndex, TimeTable
+
+
+admin.site.register(Reservation)
+admin.site.register(TimeIndex)
+admin.site.register(TimeTable)
