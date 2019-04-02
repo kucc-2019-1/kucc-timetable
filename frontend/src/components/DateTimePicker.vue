@@ -2,7 +2,7 @@
   <div>
     <div id="datepicker">
       <v-select
-        @change="changedLabel"
+        @change="onDayChange"
         :items="days"
         label="날짜"
       ></v-select>
@@ -10,7 +10,7 @@
     <div id="timepicker">
       <v-checkbox
         style="height: 10px;"
-        v-for="time in dates[0].times"
+        v-for="time in findTimes(currentDate)"
         :label="`${time}`"
         :value="`${time}`"
       ></v-checkbox>
@@ -24,8 +24,7 @@
       name: "DateTimePicker",
       data () {
         return {
-          landscape: false,
-          reactive: false,
+          currentDate: '',
           days: ['2019-03-30','2019-03-31'],
           dates: [
             {
@@ -51,8 +50,15 @@
         }
       },
       methods: {
-        changedLabel: function (event) {
-          alert(event)
+        onDayChange: function (day) {
+          this.currentDate = day;
+        },
+        findTimes: function (day) {
+          let filteredDate = this.dates.filter(date => date.day === day);
+          if  (filteredDate.length != 0) {
+            return filteredDate[0].times;
+          }
+          return [];
         }
       },
     }
