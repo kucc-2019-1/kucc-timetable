@@ -9,7 +9,7 @@ yarn-error.log*
 venv/
 .idea/
 db.sqlite3
-__pycache__
+__pycache__/
 .vscode
 *.suo
 *.ntvs*
