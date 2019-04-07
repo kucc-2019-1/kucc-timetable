@@ -16,5 +16,6 @@ __pycache__/
 *.njsproj
 *.sln
 *.iml
+*.pyc
 
 package-lock.json

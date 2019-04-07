@@ -1,4 +1,4 @@
-1. 날짜 목록 API(GET)
+1. 날짜 목록 API(GET) /day
 {
   "message" : "",
   "data" : {
@@ -7,7 +7,7 @@
   }
 }
 
-2. 날짜별 예약 가능 시간(GET)
+2. 날짜별 예약 가능 시간(GET) /times?day=2019-03-01
 {
   "message" : "",
   "data" : {
@@ -16,7 +16,7 @@
   }
 }
 
-3. 예약 목록 보기(GET)
+3. 예약 목록 보기(GET) /timetable
 {
   "message" : "",
   "data" : {
@@ -27,7 +27,7 @@
   }
 }
 
-4. 예약 만들기(POST)
+4. 예약 만들기(POST) /reservation
 {
   "message" : "",
   "data" : {
