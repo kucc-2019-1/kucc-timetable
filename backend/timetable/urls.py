@@ -11,4 +11,5 @@ router.register('time_index', views.Time_indexViewSet)
 urlpatterns = [
     path('', include(router.urls)),
     url(r'^timetable/$', views.TimeTableView.as_view(), name='timetable'),
+    url(r'^day/$', views.DateListView.as_view(), name='day'),
 ]

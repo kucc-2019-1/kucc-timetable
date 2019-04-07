@@ -31,10 +31,17 @@ class TimeTableViewSerializer(serializers.ModelSerializer):
         return obj.catch_day()
 
     def get_start_time(self, obj):
-        return obj.catch_time()['start_time']
+        return str(obj.catch_time()['start_time'])[0:5]
 
     def get_end_time(self, obj):
-        return obj.catch_time()['end_time']
+        return str(obj.catch_time()['end_time'])[0:5]
+
+
+class DateListSerializer(serializers.Serializer):
+    day = serializers.CharField(max_length=10)
+    day_of_week = serializers.CharField(max_length=3)
+
+
 
 
 class TimeIndexSerializer(serializers.ModelSerializer):
