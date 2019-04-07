@@ -11,8 +11,12 @@
 {
   "message" : "",
   "data" : {
-    "number" : 0,
-    "time" : "09:00~09:30"
+      [
+      {"order" : 0, "time" : "09:00~09:30"},
+      {"order" : 1, "time" : "09:30~10:00"},
+      {"order" : 3, "time" : "10:00~10:30"},
+      {"order" : 6, "time" : "11:30~12:00"}
+      ]
   }
 }
 
@@ -20,10 +24,11 @@
 {
   "message" : "",
   "data" : {
-    "title" : "python 스터디",
-    "name" : "김수홍",
-    "day" :0,
-    "time" : {"start" : 0, "finish" : 2}
+      "title" : "python 스터디",
+      "name" : "김수홍",
+      "day" :0,
+      "start_time":0,
+      "end_time":2,
   }
 }
 
@@ -36,4 +41,4 @@
     "day" :1,
     "time" : {"start" : 5, "finish" : 7}
   }
-}
+}t
