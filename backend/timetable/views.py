@@ -37,7 +37,12 @@ class DateListView(views.APIView):
             elif args == 6:
                 return "SAT"
 
-        data = [{"day": str(timezone.now())[:10], "day_of_week": dayofweek(timezone.now().weekday())}]
+        data = [
+            {
+                "message": "",
+                "data": {"day": str(timezone.now())[:10], "day_of_week": dayofweek(timezone.now().weekday())}
+            }
+        ]
         instance = serializers.DateListSerializer(data, many=True).data
         return Response(instance)
 
@@ -45,6 +50,9 @@ class DateListView(views.APIView):
 class Time_indexViewSet(viewsets.ModelViewSet):
     queryset = models.TimeIndex.objects.all()
     serializer_class = serializers.TimeIndexSerializer
+
+
+# class AvailableReservationTime
 
 
 

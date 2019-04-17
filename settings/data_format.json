@@ -1,4 +1,4 @@
-1. 날짜 목록 API(GET) /day
+1. 날짜 목록 API(GET) /day //prototype 완료
 {
   "message" : "",
   "data" : {
@@ -20,7 +20,7 @@
   }
 }
 
-3. 예약 목록 보기(GET) /timetable
+3. 예약 목록 보기(GET) /timetable // prototype 완료
 {
   "message" : "",
   "data" : {

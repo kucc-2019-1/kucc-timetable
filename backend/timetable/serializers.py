@@ -38,8 +38,8 @@ class TimeTableViewSerializer(serializers.ModelSerializer):
 
 
 class DateListSerializer(serializers.Serializer):
-    day = serializers.CharField(max_length=10)
-    day_of_week = serializers.CharField(max_length=3)
+    message = serializers.CharField(max_length=10)
+    data = serializers.DictField()
 
 
 
