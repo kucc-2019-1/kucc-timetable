@@ -7,11 +7,7 @@ from . import models
 from . import serializers
 
 
-class ReservationViewSet(viewsets.ModelViewSet):
-    queryset = models.Reservation.objects.all()
-    serializer_class = serializers.ReservationSerializer
-
-
+# 1. 날짜 목록 API(GET) /day
 class TimeTableView(views.APIView):
 
     def get(self, request):
@@ -67,6 +63,37 @@ class TimeTableView(views.APIView):
         return Response(instance)
 
 
+# 2. 날짜별 예약 가능 시간(GET) /times?day=2019-03-01
+class AvailableReservationTimeView(views.APIView):
+    def get(self, request):
+        day = request.GET.get('day')
+        day = datetime.strptime(day, '%Y-%m-%d').date()
+        unavaiabletime = models.TimeTable.objects.filter(day=day)
+        countindex = 9
+        order = set([])
+        for i in range(0, countindex):
+            order.add(i)
+
+        for model in unavaiabletime:
+            order.remove(model.time_index.time_index_id)
+
+        data = []
+
+        for i in order:
+            dict = {"order": i, "time": str(models.TimeIndex.objects.get(time_index_id=i))}
+            data.append(dict)
+
+        dictionary = [
+            {
+                "message": "",
+                "data": data,
+            }
+        ]
+        instance = serializers.AvailableReservationTimeViewSerializer(dictionary, many=True).data
+        return Response(instance)
+
+
+# 3. 예약 목록 보기(GET) /timetable
 class DateListView(views.APIView):
 
     def get(self, request):
@@ -94,44 +121,6 @@ class DateListView(views.APIView):
         ]
         instance = serializers.DateListSerializer(dictionary, many=True).data
         return Response(instance)
-
-
-class AvailableReservationTimeView(views.APIView):
-    def get(self, request):
-        day = request.GET.get('day')
-        day = datetime.strptime(day, '%Y-%m-%d').date()
-        bookedtimes = models.TimeTable.objects.filter(day=day)
-        countindex = 9
-        order = set([])
-        for i in range(0, countindex):
-            order.add(i)
-
-        for model in bookedtimes:
-            order.remove(model.time_index.time_index_id)
-
-        data = []
-
-        for i in order:
-            dict = {"order": i, "time": str(models.TimeIndex.objects.get(time_index_id=i))}
-            data.append(dict)
-
-        dictionary = [
-            {
-                "message": "",
-                "data": data,
-            }
-        ]
-        instance = serializers.AvailableReservationTimeViewSerializer(dictionary, many=True).data
-        return Response(instance)
-
-
-class Time_indexViewSet(viewsets.ModelViewSet):
-    queryset = models.TimeIndex.objects.all()
-    serializer_class = serializers.TimeIndexSerializer
-
-
-# class AvailableReservationTime
-
 
 
 
