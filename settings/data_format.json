@@ -7,7 +7,7 @@
   }
 }
 
-2. 날짜별 예약 가능 시간(GET) /times?day=2019-03-01
+2. 날짜별 예약 가능 시간(GET) /times?day=2019-03-01 // 완료
 {
   "message" : "",
   "data" : {
@@ -55,13 +55,15 @@
       ]
 }
 
-4. 예약 만들기(POST) /reservation
+4. 예약 만들기(POST) /reservation // prototype 완료
 {
   "message" : "",
-  "data" : {
-    "title" : "알고리즘 스터디",
-    "name" : "남정호",
-    "day" :1,
-    "time" : {"start" : 5, "finish" : 7}
-  }
-}t
+  "data" : 
+    {
+        "title" : "알고리즘 스터디",
+        "name" : "남정호",
+        "day" :1,
+        "start_time":5,
+        "end_time":7,
+    }
+}
