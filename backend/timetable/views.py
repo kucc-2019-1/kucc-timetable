@@ -2,6 +2,7 @@ from rest_framework import viewsets, views, generics
 from rest_framework.response import Response
 from django.utils import timezone
 
+
 from . import models
 from . import serializers
 
@@ -11,11 +12,66 @@ class ReservationViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.ReservationSerializer
 
 
-class TimeTableView(generics.ListAPIView):
-    serializer_class = serializers.TimeTableViewSerializer
+# class TimeTableView(generics.ListAPIView):
+#     serializer_class = serializers.TimeTableViewSerializer
+#
+#     def get_queryset(self):
+#         return models.Reservation.objects.all()
 
-    def get_queryset(self):
-        return models.Reservation.objects.all()
+
+class TimeTableView(views.APIView):
+
+    def get(self, request):
+        data = []
+        queryset = models.TimeTable.objects.filter(day__gte=timezone.now()).order_by('day', 'time_index')
+
+        reservation = queryset[0].reservation
+        title = reservation.title
+        name = reservation.user.name
+        day = queryset[0].day
+        start_time = queryset[0].time_index.time_index_id
+        end_time = queryset[0].time_index.time_index_id
+
+        for model in queryset:
+            if model.reservation == reservation:
+                end_time = model.time_index.time_index_id
+
+            else:
+                data.append(
+                    {
+                        "title": title,
+                        "name": name,
+                        "day": day,
+                        "start_time": start_time,
+                        "end_time": end_time
+                    }
+                )
+
+                reservation = model.reservation
+                title = reservation.title
+                name = reservation.user.name
+                day = model.day
+                start_time = model.time_index.time_index_id
+                end_time = model.time_index.time_index_id
+
+        data.append(
+            {
+                "title": title,
+                "name": name,
+                "day": day,
+                "start_time": start_time,
+                "end_time": end_time
+            }
+        )
+
+        dictionary = [
+            {
+                "message": "",
+                "data": data,
+            }
+        ]
+        instance = serializers.TimeTableViewSerializer(dictionary, many=True).data
+        return Response(instance)
 
 
 class DateListView(views.APIView):
@@ -37,13 +93,13 @@ class DateListView(views.APIView):
             elif args == 6:
                 return "SAT"
 
-        data = [
+        dictionary = [
             {
                 "message": "",
                 "data": {"day": str(timezone.now())[:10], "day_of_week": dayofweek(timezone.now().weekday())}
             }
         ]
-        instance = serializers.DateListSerializer(data, many=True).data
+        instance = serializers.DateListSerializer(dictionary, many=True).data
         return Response(instance)
 
 

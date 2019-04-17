@@ -1,4 +1,4 @@
-1. 날짜 목록 API(GET) /day //prototype 완료
+1. 날짜 목록 API(GET) /day // 완료
 {
   "message" : "",
   "data" : {
@@ -12,24 +12,35 @@
   "message" : "",
   "data" : {
       [
-      {"order" : 0, "time" : "09:00~09:30"},
-      {"order" : 1, "time" : "09:30~10:00"},
-      {"order" : 3, "time" : "10:00~10:30"},
-      {"order" : 6, "time" : "11:30~12:00"}
+          {"order" : 0, "time" : "09:00~09:30"},
+          {"order" : 1, "time" : "09:30~10:00"},
+          {"order" : 3, "time" : "10:00~10:30"},
+          {"order" : 6, "time" : "11:30~12:00"}
       ]
   }
 }
 
-3. 예약 목록 보기(GET) /timetable // prototype 완료
+3. 예약 목록 보기(GET) /timetable // 완료
 {
   "message" : "",
-  "data" : {
-      "title" : "python 스터디",
-      "name" : "김수홍",
-      "day" :0,
-      "start_time":0,
-      "end_time":2,
-  }
+  "data" : [
+        {
+            "title" : "python 스터디",
+            "name" : "김수홍",
+            "day" :0,
+            "start_time":0,
+            "end_time":2,
+        },
+        {
+            "title" : "알고리즘 스터디",
+            "name" : "남정호",
+            "day" :0,
+            "start_time":3,
+            "end_time":4,
+        },
+      
+      
+      ]
 }
 
 4. 예약 만들기(POST) /reservation
