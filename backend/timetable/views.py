@@ -28,7 +28,7 @@ class TimeTableView(views.APIView):
         reservation = queryset[0].reservation
         title = reservation.title
         name = reservation.user.name
-        day = queryset[0].day
+        day = (queryset[0].day-timezone.now().date()).days
         start_time = queryset[0].time_index.time_index_id
         end_time = queryset[0].time_index.time_index_id
 
@@ -50,7 +50,7 @@ class TimeTableView(views.APIView):
                 reservation = model.reservation
                 title = reservation.title
                 name = reservation.user.name
-                day = model.day
+                day = (model.day-timezone.now().date()).days
                 start_time = model.time_index.time_index_id
                 end_time = model.time_index.time_index_id
 
@@ -96,7 +96,7 @@ class DateListView(views.APIView):
         dictionary = [
             {
                 "message": "",
-                "data": {"day": str(timezone.now())[:10], "day_of_week": dayofweek(timezone.now().weekday())}
+                "data": {"day": str(timezone.now().date()), "day_of_week": dayofweek(timezone.now().weekday())}
             }
         ]
         instance = serializers.DateListSerializer(dictionary, many=True).data
