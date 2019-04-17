@@ -1,7 +1,7 @@
-from rest_framework import viewsets, views, generics
+from rest_framework import viewsets, views
 from rest_framework.response import Response
 from django.utils import timezone
-
+from datetime import datetime
 
 from . import models
 from . import serializers
@@ -10,13 +10,6 @@ from . import serializers
 class ReservationViewSet(viewsets.ModelViewSet):
     queryset = models.Reservation.objects.all()
     serializer_class = serializers.ReservationSerializer
-
-
-# class TimeTableView(generics.ListAPIView):
-#     serializer_class = serializers.TimeTableViewSerializer
-#
-#     def get_queryset(self):
-#         return models.Reservation.objects.all()
 
 
 class TimeTableView(views.APIView):
@@ -100,6 +93,35 @@ class DateListView(views.APIView):
             }
         ]
         instance = serializers.DateListSerializer(dictionary, many=True).data
+        return Response(instance)
+
+
+class AvailableReservationTimeView(views.APIView):
+    def get(self, request):
+        day = request.GET.get('day')
+        day = datetime.strptime(day, '%Y-%m-%d').date()
+        bookedtimes = models.TimeTable.objects.filter(day=day)
+        countindex = 9
+        order = set([])
+        for i in range(0, countindex):
+            order.add(i)
+
+        for model in bookedtimes:
+            order.remove(model.time_index.time_index_id)
+
+        data = []
+
+        for i in order:
+            dict = {"order": i, "time": str(models.TimeIndex.objects.get(time_index_id=i))}
+            data.append(dict)
+
+        dictionary = [
+            {
+                "message": "",
+                "data": data,
+            }
+        ]
+        instance = serializers.AvailableReservationTimeViewSerializer(dictionary, many=True).data
         return Response(instance)
 
 
