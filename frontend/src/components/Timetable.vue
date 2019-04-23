@@ -9,7 +9,17 @@
       <template v-slot:items="props">
         <td>{{ props.item.time }}</td>
         <template v-for="day in 7">
-          <td v-html="getReservationText(findReservation(props.item.reservations, day-1))"></td>
+          <td class="timetable-cell"
+              :style="{ height: reservationHeight*2 + 'px' }">
+            <div class="timetable-cell-placeholder"></div>
+            <div v-if="findReservation(props.item.reservations, day-1)"
+                      class="reservation bg-blue text-center"
+                      :style="getReservationStyle(findReservation(props.item.reservations, day-1))">
+
+                {{ findReservation(props.item.reservations, day-1).title }}<br />
+                {{ findReservation(props.item.reservations, day-1).name }}
+            </div>
+          </td>
         </template>
       </template>
     </v-data-table>
@@ -65,19 +75,28 @@
         let result = reservations.filter(reservation => reservation.day === day);
         return result ? result[0] : null;
       },
-      getReservationText: function(reservation) {
-        if (reservation) {
-          return `${reservation.title} <br/> ${reservation.name}`;
-        }
-        return '';
+      getReservationStyle: function(reservation) {
+        return {
+          'top': reservation.start_time % 2 === 0 ? '0' : '50%',
+          'height': this.reservationHeight * (reservation.end_time - reservation.start_time + 1) + 'px',
+          'background-color': this.generateColor(reservation),
+          'color': 'white',
+        };
       },
       isTimeIn: function(reservation, time) {
-        return reservation.start_time <= time && time <= reservation.end_time;
+        return time*2 <= reservation.start_time && reservation.start_time <= time*2 + 1;
+      },
+      generateColor: function(reservation) {
+        return `rgba(${reservation.start_time * 10},
+                     ${this.endTime - this.startTime - reservation.end_time * 10},
+                     ${(8-reservation.day) * 20},
+                      0.7)`
       }
     },
     data() {
       return {
-        startDate: new Date('2019-04-10'),
+        startDate: new Date(),
+        reservationHeight: 35,
         startTime: 9,
         endTime: 23,
         reservations: [
@@ -108,6 +127,13 @@
             "day" : 3,
             "start_time":2,
             "end_time":3,
+          },
+          {
+            "title" : "python 스터디4",
+            "name" : "김수홍4",
+            "day" : 3,
+            "start_time":15,
+            "end_time":23,
           }
         ]
       }
@@ -116,4 +142,27 @@
 </script>
 
 <style scoped>
+  table.v-table tbody td:not(:first-child) {
+    padding: 0;
+  }
+
+  .timetable-cell {
+    position: relative;
+  }
+
+  .timetable-cell-placeholder {
+    width: 150px;
+  }
+
+  .reservation {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: absolute;
+  }
+
+  .bg-blue {
+    background-color: #789DFE;
+  }
 </style>
