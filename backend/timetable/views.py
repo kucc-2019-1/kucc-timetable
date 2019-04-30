@@ -102,12 +102,11 @@ class AvailableReservationTimeView(views.APIView):
             return Response(instance)
 
 
-# 3. 예약 목록 보기(GET) /timetable
-class TimeTableView(views.APIView):
+class Reservation(views.APIView):
+
+    # 3. 예약 목록 보기(GET) /reservations
     def get(self, request):
         data = []
-
-
 
         # 우선 오늘 및 이후의 날짜의 데이터만 가져옴. 이 때 날짜순, time_index 순으로 정렬
         queryset = models.TimeTable.objects.filter(day__gte=timezone.now()).order_by('day', 'time_index')
@@ -167,10 +166,7 @@ class TimeTableView(views.APIView):
         instance = serializers.TimeTableViewSerializer(dictionary, many=True).data
         return Response(instance)
 
-
-# 4. 예약 만들기(POST) /reservation
-class MakeReservation(views.APIView):
-
+    # 4. 예약 만들기(POST) /reservation
     def post(self, request):
         user = request.user
 
