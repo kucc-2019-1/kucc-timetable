@@ -1,8 +1,18 @@
 <template>
   <div>
-    <div id="datepicker">
-      <v-select @change="onDayChange" :items="days" label="날짜"></v-select>
+    <br>
+    <div id="datepicker" style ="height: 300px;" >
+      <v-app id="inspire">
+        <v-flex xs12 sm6 d-flex>
+          <v-select
+            @change="onDayChange"
+            :items="days"
+            label="날짜">
+          </v-select>
+        </v-flex>
+      </v-app>
     </div>
+
     <div id="timepicker">
       <div class="timepicker-section" v-for="page in getPages(findTimes(currentDate))" :key="page">
         <v-checkbox
@@ -14,6 +24,11 @@
         ></v-checkbox>
       </div>
     </div>
+     <form id="inputpurpose">
+       <br>
+       <input id = "purpose" type="text" name = "purpose" value="스터디명을 입력하세요" style = "outline: 1px solid"  onfocus="this.value=''">
+       <button class="button" type="button" style = "outline: 2px solid">확인</button>
+     </form>
   </div>
 </template>
 
@@ -50,7 +65,7 @@
       };
     },
     methods: {
-      onDayChange(day) {
+      onDayChange: function (day) {
         this.currentDate = day;
       },
       findTimes(day) {
@@ -70,18 +85,39 @@
 <style scoped>
   #datepicker {
     display: inline-block;
-    width: 180px;
+    width: 300px;
     margin-left: 30px;
-    margin-right: 30px;
+    margin-right: 10px;
     float: left;
+    length: 300px;
   }
+
   #timepicker {
     display: flex;
     width: 300px;
     float: left;
   }
 
+  #inputpurpose{
+    display: inline-block;
+
+  }
   .timepicker-section {
     margin-right: 30px;
+  }
+
+  #purpose{
+    width: 300px;
+    padding: 10px;
+    margin-right: 30px;
+    display: inline-block;
+  }
+
+  .button{
+    padding: 9px;
+    display: inline-block;
+    background-color: darkblue;
+    font-weight: bold;
+    color: white;
   }
 </style>
