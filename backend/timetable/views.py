@@ -88,7 +88,7 @@ class AvailableReservationTimeView(views.APIView):
                 }
             ]
             instance = serializers.AvailableReservationTimeViewSerializer(dictionary, many=True).data
-            return Response(instance)
+            return Response(status=400, data=instance)
 
         # day에 올바른 값이 오지 않았을 경우 예외처리
         except ValueError:
@@ -106,6 +106,8 @@ class AvailableReservationTimeView(views.APIView):
 class TimeTableView(views.APIView):
     def get(self, request):
         data = []
+
+
 
         # 우선 오늘 및 이후의 날짜의 데이터만 가져옴. 이 때 날짜순, time_index 순으로 정렬
         queryset = models.TimeTable.objects.filter(day__gte=timezone.now()).order_by('day', 'time_index')
@@ -167,18 +169,16 @@ class TimeTableView(views.APIView):
 
 
 # 4. 예약 만들기(POST) /reservation
-class MakeReservation(generic.View):
+class MakeReservation(views.APIView):
+
     def post(self, request):
         user = request.user
 
         # json 데이터를 받음
-        received_json_data = json.loads(request.body)
-        message = received_json_data["message"]
-        data = received_json_data["data"]
-        title = data["title"]
-        day = timezone.now() + timedelta(days=data["day"])
-        start_time = data["start_time"]
-        end_time = data["end_time"]
+        title = request.data["title"]
+        day = timezone.now() + timedelta(days=request.data["day"])
+        start_time = request.data["start_time"]
+        end_time = request.data["end_time"]
 
         # 해당 날짜에 있는 예약들을 반환하는 쿼리
         unavailabletime = models.TimeTable.objects.filter(day=day)
@@ -206,6 +206,10 @@ class MakeReservation(generic.View):
                     time_index=models.TimeIndex.objects.get(time_index_id=index)
                 )
                 timetablemodel.save()
+            return Response(data={"message": ""})
+        else:
+            return Response(status=400, data={"message": "이미 예약된 시간입니다."})
+
 
 
 
