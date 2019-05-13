@@ -110,52 +110,52 @@ class Reservation(views.APIView):
 
         # 우선 오늘 및 이후의 날짜의 데이터만 가져옴. 이 때 날짜순, time_index 순으로 정렬
         queryset = models.TimeTable.objects.filter(day__gte=timezone.now()).order_by('day', 'time_index')
+        if queryset:
+            # 최초 데이터를 저장
+            reservation = queryset[0].reservation
+            title = reservation.title
+            name = reservation.user.name
+            day = (queryset[0].day-timezone.now().date()).days
+            start_time = queryset[0].time_index.time_index_id
+            end_time = queryset[0].time_index.time_index_id
 
-        # 최초 데이터를 저장
-        reservation = queryset[0].reservation
-        title = reservation.title
-        name = reservation.user.name
-        day = (queryset[0].day-timezone.now().date()).days
-        start_time = queryset[0].time_index.time_index_id
-        end_time = queryset[0].time_index.time_index_id
+            # for 문을 이용하여 직접값과 비교
+            for model in queryset:
 
-        # for 문을 이용하여 직접값과 비교
-        for model in queryset:
+                # 같다면, 같은 예약이기 때문에 end_time만 바꾸어줌
+                if model.reservation == reservation:
+                    end_time = model.time_index.time_index_id
 
-            # 같다면, 같은 예약이기 때문에 end_time만 바꾸어줌
-            if model.reservation == reservation:
-                end_time = model.time_index.time_index_id
+                # 다르다면, 다른 예약이기 때문에 현재까지 저장된 데이터를 data에 append 시켜줌
+                else:
+                    data.append(
+                        {
+                            "title": title,
+                            "name": name,
+                            "day": day,
+                            "start_time": start_time,
+                            "end_time": end_time
+                        }
+                    )
 
-            # 다르다면, 다른 예약이기 때문에 현재까지 저장된 데이터를 data에 append 시켜줌
-            else:
-                data.append(
-                    {
-                        "title": title,
-                        "name": name,
-                        "day": day,
-                        "start_time": start_time,
-                        "end_time": end_time
-                    }
-                )
+                # 그리고 다시 초기화
+                    reservation = model.reservation
+                    title = reservation.title
+                    name = reservation.user.name
+                    day = (model.day-timezone.now().date()).days
+                    start_time = model.time_index.time_index_id
+                    end_time = model.time_index.time_index_id
 
-            # 그리고 다시 초기화
-                reservation = model.reservation
-                title = reservation.title
-                name = reservation.user.name
-                day = (model.day-timezone.now().date()).days
-                start_time = model.time_index.time_index_id
-                end_time = model.time_index.time_index_id
-
-        # for 문이 끝나고 마지막 남은 데이터까지 처리
-        data.append(
-            {
-                "title": title,
-                "name": name,
-                "day": day,
-                "start_time": start_time,
-                "end_time": end_time
-            }
-        )
+            # for 문이 끝나고 마지막 남은 데이터까지 처리
+            data.append(
+                {
+                    "title": title,
+                    "name": name,
+                    "day": day,
+                    "start_time": start_time,
+                    "end_time": end_time
+                }
+            )
 
         dictionary = [
             {
