@@ -31,3 +31,6 @@ deploy:
     on:
       repo: jojoldu/springboot-webservice #Github 주소
       branch: master
+      
+      
+#test 1
