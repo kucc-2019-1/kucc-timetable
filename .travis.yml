@@ -19,6 +19,14 @@ notifications:
       - rainy_waltz@naver.com
       
       
+      
+before_deploy:
+  - zip -r kucctimetable-webservice *
+  - mkdir -p deploy
+  - mv kucctimetable-webservice.zip deploy/kucctimetable-webservice.zip
+  
+  
+      
 deploy:
   - provider: s3
     access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설정된 값
@@ -27,6 +35,7 @@ deploy:
     region: ap-northeast-2
     skip_cleanup: true
     acl: public_read
+    local_dir: deploy
     wait-until-deployed: true
     on:
       repo: kucc-2019-1/kucc-timetable #Github 주소
