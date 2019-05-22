@@ -16,9 +16,9 @@ script:
       
       
 before_deploy:
-  - zip -r kucctimetable-webservice *
   - mkdir -p deploy
-  - mv kucctimetable-webservice.zip deploy/kucctimetable-webservice.zip
+  - zip deploy/kucctimetable-webservice.zip appspec.yml execute-deploy.sh
+  
   
   
       
@@ -34,7 +34,7 @@ deploy:
     wait-until-deployed: true
     on:
       repo: kucc-2019-1/kucc-timetable #Github 주소
-      branch: master
+      branch: travis-test
       
   - provider: codedeploy
     access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설정된 값
@@ -48,7 +48,7 @@ deploy:
     wait-until-deployed: true
     on:
       repo: kucc-2019-1/kucc-timetable
-      branch: master
+      branch: travis-test
       
 
     
@@ -58,4 +58,4 @@ notifications:
       - rainy_waltz@naver.com
       
 
-#test 5
+#test 25
