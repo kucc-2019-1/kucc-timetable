@@ -31,13 +31,11 @@ class DateListView(views.APIView):
             elif args == 6:
                 return "SAT"
 
-        dictionary = [
-            {
+        dictionary = {
                 "message": "",
                 "data": {"day": str(timezone.now().date()), "day_of_week": dayofweek(timezone.now().weekday())}
             }
-        ]
-        instance = serializers.DateListSerializer(dictionary, many=True).data
+        instance = serializers.DateListSerializer(dictionary, many=False).data
         return Response(instance)
 
 
@@ -70,13 +68,11 @@ class AvailableReservationTimeView(views.APIView):
                 dict = {"order": i, "time": str(models.TimeIndex.objects.get(time_index_id=i))}
                 data.append(dict)
 
-            dictionary = [
-                {
+            dictionary = {
                     "message": "",
                     "data": data,
                 }
-            ]
-            instance = serializers.AvailableReservationTimeViewSerializer(dictionary, many=True).data
+            instance = serializers.AvailableReservationTimeViewSerializer(dictionary, many=False).data
             return Response(instance)
 
         # day 값이 없을 경우 예외처리
@@ -157,13 +153,11 @@ class Reservation(views.APIView):
                 }
             )
 
-        dictionary = [
-            {
+        dictionary = {
                 "message": "",
                 "data": data,
             }
-        ]
-        instance = serializers.TimeTableViewSerializer(dictionary, many=True).data
+        instance = serializers.TimeTableViewSerializer(dictionary, many=False).data
         return Response(instance)
 
     # 4. 예약 만들기(POST) /reservation
