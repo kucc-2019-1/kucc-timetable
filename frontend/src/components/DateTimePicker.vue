@@ -6,7 +6,7 @@
         <v-flex xs12 sm6 d-flex>
           <v-select
             @change="onDayChange"
-            :items="days"
+            :items="dayStrings"
             label="날짜">
           </v-select>
         </v-flex>
@@ -36,10 +36,15 @@
 <script>
   export default {
     name: "DateTimePicker",
+    props: ['days'],
+    computed: {
+      dayStrings: function() {
+        return this.days.map((d) => d.toISOString().split('T')[0])
+      }
+    },
     data() {
       return {
         currentDate: "",
-        days: ["2019-03-30", "2019-03-31"],
         dates: [
           {
             day: "2019-03-30",

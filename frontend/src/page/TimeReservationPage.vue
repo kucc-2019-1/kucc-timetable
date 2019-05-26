@@ -1,7 +1,10 @@
 <template>
   <div>
-    <timetable v-bind:days="['2019-03-30','2019-03-31']"></timetable>
-    <date-time-picker v-bind:days="['2019-03-30','2019-03-31']"></date-time-picker>
+    <timetable
+      :reservations="reservations"
+      :days="days"
+    ></timetable>
+    <date-time-picker v-bind:days="days"></date-time-picker>
   </div>
 </template>
 
@@ -15,11 +18,20 @@
     components: { DateTimePicker, Timetable },
     data() {
       return {
-        startDay: '2019-03-30'
+        reservations: [],
       }
     },
     computed: {
-
+      days: function() {
+        let dayList = [];
+        const startDate = new Date();
+        for(let i = 0; i < 7; i++) {
+          const nextDate = new Date();
+          nextDate.setDate(startDate.getDate() + i);
+          dayList.push(nextDate);
+        }
+        return dayList;
+      }
     }
   }
 </script>

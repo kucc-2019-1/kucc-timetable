@@ -32,7 +32,7 @@
   }
 }
 
-3. 예약 목록 보기(GET) /timetable // 완료
+3. 예약 목록 보기(GET) /reservations // 완료
 {
   "message" : "",
   "data" : [

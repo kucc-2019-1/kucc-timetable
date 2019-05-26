@@ -39,16 +39,8 @@
 
   export default {
     name: "Timetable",
+    props: ['reservations', 'days'],
     computed: {
-      days: function() {
-        let dayList = [];
-        for(let i = 0; i < 7; i++) {
-          const nextDate = new Date();
-          nextDate.setDate(this.startDate.getDate() + i);
-          dayList.push(nextDate);
-        }
-        return dayList;
-      },
       dayHeaders: function() {
         const header = [{
           text: '시간',
@@ -99,43 +91,6 @@
         reservationHeight: 35,
         startTime: 9,
         endTime: 23,
-        reservations: [
-          {
-            "title" : "python 스터디1",
-            "name" : "김수홍",
-            "day" : 0,
-            "start_time": 0,
-            "end_time":2,
-          },
-          {
-            "title" : "python 스터디2",
-            "name" : "김수홍2",
-            "day" : 0,
-            "start_time": 5,
-            "end_time": 5,
-          },
-          {
-            "title" : "python 스터디3",
-            "name" : "김수홍3",
-            "day" : 5,
-            "start_time":3,
-            "end_time":4,
-          },
-          {
-            "title" : "python 스터디4",
-            "name" : "김수홍4",
-            "day" : 3,
-            "start_time":2,
-            "end_time":3,
-          },
-          {
-            "title" : "python 스터디4",
-            "name" : "김수홍4",
-            "day" : 3,
-            "start_time":15,
-            "end_time":23,
-          }
-        ]
       }
     }
   }
