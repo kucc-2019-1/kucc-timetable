@@ -7,6 +7,9 @@
           <v-select
             @change="onDayChange"
             :items="days"
+            :value ="days"
+            v-model="selectedDay"
+            id="dateValue"
             label="날짜">
           </v-select>
         </v-flex>
@@ -17,6 +20,7 @@
       <div class="timepicker-section" v-for="page in getPages(findTimes(currentDate))" :key="page">
         <v-checkbox
           style="height: 10px;"
+          v-model="selectedTimes"
           v-for="time in findTimes(currentDate).slice(page, page+6)"
           :key="time"
           :label="time"
@@ -27,13 +31,17 @@
      <form id="inputpurpose">
        <br>
        <input id = "purpose" type="text" name = "purpose" value="스터디명을 입력하세요" style = "outline: 1px solid"  onfocus="this.value=''">
-       <button class="button" type="button" style = "outline: 2px solid">확인</button>
+       <button @click="onSubmitButtonClick"
+         class="button" type="button" style = "outline: 2px solid">확인</button>
      </form>
+    <div>{{selectedDay}}</div>
+    <div>{{selectedTimes}}</div>
   </div>
 </template>
 
 
 <script>
+
   export default {
     name: "DateTimePicker",
     data() {
@@ -44,42 +52,71 @@
           {
             day: "2019-03-30",
             times: [
-              "9:00~9:30",
-              "9:30~10:00",
-              "10:00~10:30",
-              "10:30~11:00",
-              "11:00~11:30",
-              "11:30~12:00",
-              "12:00~12:30",
-              "12:30~13:00"
+              {
+                "order": 0,
+                "time": "09:00 ~ 09:30"
+              },
+              {
+                "order": 1,
+                "time": "09:30 ~ 10:00"
+              },
+              {
+                "order": 3,
+                "time": "10:00 ~ 10:30"
+              },
+              {
+                "order": 6,
+                "time": "11:30 ~ 12:00"
+              }
             ]
           },
           {
             day: "2019-03-31",
-            times: [
-              "9:00~9:30",
-              "9:30~10:00",
-              "13:00~13:30"]
+            times:
+              [
+                {
+                  "order": 0,
+                  "time": "09:00 ~ 09:30"
+                },
+                {
+                  "order": 6,
+                  "time": "11:30 ~ 12:00"
+                }
+              ]
           }
-        ]
+        ],
+        selectedDay: "",
+        selectedTimes: []
       };
     },
     methods: {
       onDayChange: function (day) {
         this.currentDate = day;
+        return day;
       },
       findTimes(day) {
         let filteredDate = this.dates.filter(date => date.day === day);
         if (filteredDate.length != 0) {
-          return filteredDate[0].times;
+          return filteredDate[0].times.map(time => time.time);
         }
         return [];
       },
       getPages(times) {
         return [...Array(Math.ceil(times.length / 6)).keys()].map(x => x * 6);
+      },
+      onSubmitButtonClick() {
+        let data = {
+          "title": document.getElementById("purpose").value,
+          "name": '김가은',
+          "day": this.selectedDay,
+          "start_time": this.selectedTimes[0],
+          "end_time": this.selectedTimes[this.selectedTimes.length-1]
+        };
+        console.log(data);
       }
     }
   };
+
 </script>
 
 <style scoped>
