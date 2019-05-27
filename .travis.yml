@@ -1,13 +1,61 @@
 language: python
 python:
       - "3.6"
-#    services:
-#      - mysql
-env:
-    -DJANGO=2.1.4
+    
+branches:
+#  only:
+#    - master
     
 install:
-    - pip install -r backend\requirements.txt
+    - pip install -r backend/requirements.txt
     
 script:
-    - backend\python manage.py runserver
+    - python backend/manage.py test
+    
+
+      
+      
+before_deploy:
+  - mkdir -p deploy
+  - zip deploy/kucctimetable-webservice.zip appspec.yml execute-deploy.sh
+  
+  
+  
+      
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설정된 값
+    secret_access_key: $AWS_SECRET_KEY # Travis repo settings에 설정된 값
+    bucket: kucctimetable-webservice-deploy # 6-3-3에서 생성한 S3 버킷
+    region: ap-northeast-2
+    skip_cleanup: true
+    acl: public_read
+    local_dir: deploy
+    wait-until-deployed: true
+    on:
+      repo: kucc-2019-1/kucc-timetable #Github 주소
+      branch: travis-test
+      
+  - provider: codedeploy
+    access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설정된 값
+    secret_access_key: $AWS_SECRET_KEY # Travis repo settings에 설정된 값
+    bucket: kucctimetable-webservice-deploy # S3 버킷
+    key: kucctimetable-webservice.zip # 빌드 파일을 압축해서 전달
+    bundle_type: zip
+    application: kucctimetable-webservice # 웹 콘솔에서 등록한 CodeDeploy 어플리케이션
+    deployment_group: kucctimetable-webservice-group # 웹 콘솔에서 등록한 CodeDeploy 배포 그룹
+    region: ap-northeast-2
+    wait-until-deployed: true
+    on:
+      repo: kucc-2019-1/kucc-timetable
+      branch: travis-test
+      
+
+    
+notifications:
+  email:
+    recipients:
+      - rainy_waltz@naver.com
+      
+
+#test 25
