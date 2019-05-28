@@ -12,10 +12,23 @@
 
   import DateTimePicker from "../components/DateTimePicker";
   import Timetable from "../components/Timetable";
+  import api from "../api";
 
   export default {
     name: "TimeReservationPage",
     components: { DateTimePicker, Timetable },
+    methods: {
+      loadReservations: function () {
+        api.get('/reservations')
+          .then(json => {
+            this.reservations = json.data;
+          })
+          .catch(e => console.error(e));
+      }
+    },
+    mounted() {
+      this.loadReservations();
+    },
     data() {
       return {
         reservations: [],
