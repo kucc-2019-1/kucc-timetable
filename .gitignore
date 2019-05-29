@@ -19,3 +19,4 @@ __pycache__/
 *.pyc
 
 package-lock.json
+frontend/dist

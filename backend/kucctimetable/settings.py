@@ -20,12 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '5e=-*a_6g$+#!v=s6b^-ew8zc-r2^(-^hrpo2(bmiezh*-c7a0'
-
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', '5e=-*a_6g$+#!v=s6b^-ew8zc-r2^(-^hrpo2(bmiezh*-c7a0')
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+# TODO: ALLOWED_HOSTS 설정
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'timetable',
     'user',
+    'corsheaders'
 ]
 
 MIDDLEWARE = [
@@ -50,6 +51,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'kucctimetable.urls'
@@ -125,3 +128,14 @@ STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'user.User'
 
 LOGIN_REDIRECT_URL = '/'
+
+# TODO: CORS_ALLOW_CREDENTIALS 설정
+CORS_ALLOW_CREDENTIALS = True
+
+# CORS_ORIGIN_WHITELIST = (
+#     'http://timetable.kucc.com',
+#     'http://localhost:8080'
+# )
+
+CORS_ORIGIN_ALLOW_ALL = True
+
