@@ -6,8 +6,10 @@
 </template>
 
 <script>
+import HeaderArea from "./components/HeaderArea";
 export default {
   name: 'App',
+  components: {HeaderArea},
   data () {
     return {
     }

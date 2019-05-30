@@ -3,10 +3,14 @@ import json
 from django.http import HttpResponse
 from django.views import generic
 from rest_framework import viewsets, views
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from django.utils import timezone
 from datetime import datetime, timedelta
 
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
+
+from user.models import User
 from . import models
 from . import serializers
 
@@ -98,6 +102,8 @@ class AvailableReservationTimeView(views.APIView):
 
 
 class Reservation(views.APIView):
+    authentication_class = (JSONWebTokenAuthentication,)
+    permission_classes = (IsAuthenticatedOrReadOnly,)
 
     # 3. 예약 목록 보기(GET) /reservations
     def get(self, request):

@@ -1,11 +1,8 @@
-import Vue from 'vue'
-import Vuetify from 'vuetify'
 import Router from 'vue-router'
-import 'vuetify/dist/vuetify.min.css'
 import TimeReservationPage from "../page/TimeReservationPage";
+import LoginPage from "../page/LoginPage";
 
-Vue.use(Router);
-Vue.use(Vuetify);
+
 
 export default new Router({
   routes: [
@@ -13,6 +10,11 @@ export default new Router({
       path: '/',
       name: 'TimeReservationPage',
       component: TimeReservationPage
+    },
+    {
+      path: '/login',
+      name: 'LoginPage',
+      component: LoginPage
     }
   ]
 })

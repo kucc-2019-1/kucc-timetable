@@ -22,15 +22,19 @@
           style="height: 10px;"
           v-model="selectedTimes"
           v-for="time in findTimes(currentDate).slice(page, page+10)"
-          :key="time"
-          :label="time"
-          :value="time"
+          :key="time.order"
+          :label="time.time"
+          :value="time.order"
         ></v-checkbox>
       </div>
     </div>
      <form id="inputpurpose">
        <br>
-       <input id = "purpose" type="text" name = "purpose" value="스터디명을 입력하세요" style = "outline: 1px solid"  onfocus="this.value=''">
+       <input id="purpose"
+              type="text"
+              name="purpose"
+              placeholder="스터디명을 입력하세요"
+              v-model="purpose">
        <button @click="onSubmitButtonClick"
          class="button" type="button" style = "outline: 2px solid">확인</button>
      </form>
@@ -53,7 +57,8 @@
         currentDate: "",
         dates: [],
         selectedDay: "",
-        selectedTimes: []
+        selectedTimes: [],
+        purpose: "",
       };
     },
     methods: {
@@ -67,7 +72,7 @@
       findTimes(day) {
         let filteredDate = this.dates.filter(date => date.day === day);
         if (filteredDate.length != 0) {
-          return filteredDate[0].times.map(time => time.time);
+          return filteredDate[0].times.map(time => time);
         }
         return [];
       },
@@ -88,15 +93,30 @@
         return [...Array(Math.ceil(times.length / 10)).keys()].map(x => x * 10);
       },
       onSubmitButtonClick() {
+        if (this.selectedTimes.length === 0) {
+          alert('예약할 시간을 선택해주세요!')
+          return;
+        }
+
+        if (this.purpose.length === 0) {
+          alert('사용 목적을 입력해주세요!');
+          return;
+        }
+
+        this.selectedTimes.sort();
         let data = {
-          "title": document.getElementById("purpose").value,
+          "title": this.purpose,
           "name": '김가은',
-          "day": this.selectedDay,
+          "day": this.dayStrings.indexOf(this.selectedDay),
           "start_time": this.selectedTimes[0],
           "end_time": this.selectedTimes[this.selectedTimes.length-1]
         };
+        api.post('/reservations/', data)
+          .then(body => {
+            this.$emit('reservation-updated');
+            console.log('updated');
+          }).catch(e => console.log(e));
         console.log(data);
-        console.log(this.selectedTimes);
       }
     }
   };
@@ -132,6 +152,7 @@
     padding: 10px;
     margin-right: 30px;
     display: inline-block;
+    outline: 1px solid;
   }
 
   .button{

@@ -1,5 +1,6 @@
 <template>
   <div>
+    <header-area/>
     <timetable
       :reservations="reservations"
       :days="days"
@@ -10,13 +11,14 @@
 
 <script>
 
+  import HeaderArea from "../components/HeaderArea"
   import DateTimePicker from "../components/DateTimePicker";
   import Timetable from "../components/Timetable";
   import api from "../api";
 
   export default {
     name: "TimeReservationPage",
-    components: { DateTimePicker, Timetable },
+    components: { DateTimePicker, Timetable, HeaderArea },
     methods: {
       loadReservations: function () {
         api.get('/reservations')
@@ -25,6 +27,12 @@
           })
           .catch(e => console.error(e));
       }
+    },
+    created: function() {
+      this.$on('reservation-updated', function() {
+        this.loadReservations();
+        console.log('event received');
+      });
     },
     mounted() {
       this.loadReservations();
