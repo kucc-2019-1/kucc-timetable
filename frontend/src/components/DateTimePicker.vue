@@ -21,7 +21,7 @@
         <v-checkbox
           style="height: 10px;"
           v-model="selectedTimes"
-          v-for="time in findTimes(currentDate).slice(page, page+6)"
+          v-for="time in findTimes(currentDate).slice(page, page+10)"
           :key="time"
           :label="time"
           :value="time"
@@ -51,43 +51,7 @@
     data() {
       return {
         currentDate: "",
-        dates: [
-          {
-            day: "2019-03-30",
-            times: [
-              {
-                "order": 0,
-                "time": "09:00 ~ 09:30"
-              },
-              {
-                "order": 1,
-                "time": "09:30 ~ 10:00"
-              },
-              {
-                "order": 3,
-                "time": "10:00 ~ 10:30"
-              },
-              {
-                "order": 6,
-                "time": "11:30 ~ 12:00"
-              }
-            ]
-          },
-          {
-            day: "2019-03-31",
-            times:
-              [
-                {
-                  "order": 0,
-                  "time": "09:00 ~ 09:30"
-                },
-                {
-                  "order": 6,
-                  "time": "11:30 ~ 12:00"
-                }
-              ]
-          }
-        ],
+        dates: [],
         selectedDay: "",
         selectedTimes: []
       };
@@ -95,6 +59,9 @@
     methods: {
       onDayChange: function (day) {
         this.currentDate = day;
+        if (this.findTimes(day).length === 0) {
+          this.getReservableTimes(day);
+        }
         return day;
       },
       findTimes(day) {
@@ -104,8 +71,21 @@
         }
         return [];
       },
+      getReservableTimes(day) {
+        //TODO 호출중에 다시 호출되지 않게 해야 함
+        api.get('/times', {day: day})
+          .then(body => {
+            this.dates.push({
+              day: day,
+              times: body.data,
+            })
+
+            console.log(this.dates)
+          })
+          .catch(e => console.error(e))//alert('예약 가능한 시간을 불러오는 데 실패했습니다.'))
+      },
       getPages(times) {
-        return [...Array(Math.ceil(times.length / 6)).keys()].map(x => x * 6);
+        return [...Array(Math.ceil(times.length / 10)).keys()].map(x => x * 10);
       },
       onSubmitButtonClick() {
         let data = {
@@ -116,6 +96,7 @@
           "end_time": this.selectedTimes[this.selectedTimes.length-1]
         };
         console.log(data);
+        console.log(this.selectedTimes);
       }
     }
   };
@@ -134,7 +115,6 @@
 
   #timepicker {
     display: flex;
-    width: 300px;
     float: left;
   }
 
@@ -143,6 +123,7 @@
 
   }
   .timepicker-section {
+    width: 150px;
     margin-right: 30px;
   }
 
