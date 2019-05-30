@@ -50,8 +50,7 @@ class AvailableReservationTimeView(views.APIView):
             # 해당 날짜에 있는 예약들을 unavailable에 반환하는 쿼리
             unavailabletime = models.TimeTable.objects.filter(day=day)
 
-            # timeIndex 테이블의 레코드 개수 저장 (지금은 인덱스를 9까지만 만들어서 나중에 바꿀 예정)
-            countindex = 9
+            countindex = 25
 
             # orderset을 만들어서 모든 인덱스를 저장
             order = set([])
