@@ -1,18 +1,26 @@
 <template>
-  <div>
-    <v-card-title class="title font-weight-regular">
+  <v-layout>
+    <v-flex title
+            font-weight-regular
+            align-content-center
+            pa-4
+            text-xs-left
+            xs10>
       KUCC 동아리방 예약
-    </v-card-title>
-    <v-btn v-if="isNotLoggedIn"
-      to="/login">
-      로그인
-    </v-btn>
+    </v-flex>
 
-    <v-btn v-else
-           @click="logout">
-      로그아웃
-    </v-btn>
-  </div>
+    <v-flex pa-2>
+      <v-btn v-if="isNotLoggedIn"
+        to="/login">
+        로그인
+      </v-btn>
+
+      <v-btn v-else
+             @click="logout">
+        로그아웃
+      </v-btn>
+    </v-flex>
+  </v-layout>
 </template>
 
 <script>

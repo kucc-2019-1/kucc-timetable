@@ -1,12 +1,13 @@
 <template>
-  <div>
+  <v-layout column>
     <header-area/>
+    <v-spacer></v-spacer>
     <timetable
       :reservations="reservations"
       :days="days"
     ></timetable>
     <date-time-picker v-bind:days="days"></date-time-picker>
-  </div>
+  </v-layout>
 </template>
 
 <script>
@@ -58,5 +59,7 @@
 </script>
 
 <style scoped>
-
+  .spacer {
+    height: 40px;
+  }
 </style>
