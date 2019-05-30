@@ -186,7 +186,7 @@ class Reservation(views.APIView):
 
         # 위에서 구한 unavailabletime와 겹치는 부분이 있으면 제거해줌
         for model in unavailabletime:
-            order.remove(model.time_index.time_index_id)
+            order.discard(model.time_index.time_index_id)
         ordersizecmp = len(order)
 
         # 두 값이 다르다는 것은, 겹치는 시간이 발생하였다는 뜻이기 때문에, 두 값을 같을 경우에만 실행
