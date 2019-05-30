@@ -44,12 +44,14 @@
 
 <script>
 
+  import {getDayString} from "../utils/dateUtil";
+
   export default {
     name: "DateTimePicker",
     props: ['days'],
     computed: {
       dayStrings: function() {
-        return this.days.map((d) => d.toISOString().split('T')[0])
+        return this.days.map(getDayString)
       }
     },
     data() {
@@ -104,9 +106,13 @@
         }
 
         this.selectedTimes.sort();
+        if (!this.isAllTimesInOrder()) {
+          alert('연속된 시간만 선택가능합니다.');
+          return;
+        }
+
         let data = {
           "title": this.purpose,
-          "name": '김가은',
           "day": this.dayStrings.indexOf(this.selectedDay),
           "start_time": this.selectedTimes[0],
           "end_time": this.selectedTimes[this.selectedTimes.length-1]
@@ -114,9 +120,16 @@
         api.post('/reservations/', data)
           .then(body => {
             this.$emit('reservation-updated');
-            console.log('updated');
-          }).catch(e => console.log(e));
-        console.log(data);
+            alert('성공적으로 예약되었습니다.');
+          }).catch(e => alert('시간표 예약에 실패했습니다.'));
+      },
+      isAllTimesInOrder() {
+        for(let i = 0; i < this.selectedTimes.length-1; i++) {
+          if (this.selectedTimes[i+1] - this.selectedTimes[i] !== 1) {
+            return false;
+          }
+        }
+        return true;
       }
     }
   };

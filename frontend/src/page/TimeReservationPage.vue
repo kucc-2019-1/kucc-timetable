@@ -6,7 +6,8 @@
       :reservations="reservations"
       :days="days"
     ></timetable>
-    <date-time-picker v-bind:days="days"></date-time-picker>
+    <date-time-picker v-bind:days="days"
+                      v-on:reservation-updated="loadReservations"></date-time-picker>
   </v-layout>
 </template>
 
@@ -26,14 +27,8 @@
           .then(json => {
             this.reservations = json.data;
           })
-          .catch(e => console.error(e));
+          .catch(e => alert('시간표 정보를 불러오는 데 실패했습니다.'));
       }
-    },
-    created: function() {
-      this.$on('reservation-updated', function() {
-        this.loadReservations();
-        console.log('event received');
-      });
     },
     mounted() {
       this.loadReservations();

@@ -26,12 +26,12 @@
 </template>
 
 <script>
-  import { getDayOfWeek } from "../utils/dateUtil";
+  import { getDayOfWeek, getDayString } from "../utils/dateUtil";
 
   function getDateHeader(date) {
     return {
-      text: `${date.toISOString().split('T')[0]} (${getDayOfWeek(date)})`,
-      value: `${date.toISOString().split('T')[0]} (${getDayOfWeek(date)})`,
+      text: `${getDayString(date)} (${getDayOfWeek(date)})`,
+      value: `${getDayString(date)} (${getDayOfWeek(date)})`,
       align: 'center',
       sortable: false
     };
