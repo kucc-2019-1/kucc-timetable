@@ -50,25 +50,12 @@
         }];
         return header.concat(this.days.map(getDateHeader));;
       },
-      computedReservations: function() {
-        // TODO 서버와 시간 맞춰지면 삭제
-        // 서버와 시간이 맞지 않아 날짜가 하나씩 밀려서 나오고 있어 시간표를 보여줄 때만 날짜를 하나씩 당긴다.
-        return this.reservations.map(x => {
-          return {
-            time: x.time,
-            title: x.title,
-            start_time: x.start_time,
-            end_time: x.end_time,
-            day: x.day-1
-          }
-        });
-      },
       rows: function() {
         const result = [];
 
         for (let time = this.startTime; time < this.endTime-1; time++) {
           let row = { time: `${time}:00~${time+1}:00` };
-          row['reservations'] = this.computedReservations
+          row['reservations'] = this.reservations
                                     .filter(reservation => this.isTimeIn(reservation, time - this.startTime));
           result.push(row)
         }
